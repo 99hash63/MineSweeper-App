@@ -15,13 +15,23 @@ public class Square {
         return isMine;
     }
 
+    public void setMine(boolean mine) {
+        isMine = mine;
+    }
+
     public boolean isRevealed() {
         return isRevealed;
     }
 
-    public void setMine(boolean isMine) {
-        this.isMine = isMine;
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
     }
 
+    public int getAdjacentMines() {
+        return adjacentMines;
+    }
 
+    public void setAdjacentMines(int adjacentMines) {
+        this.adjacentMines = adjacentMines;
+    }
 }
