@@ -56,4 +56,20 @@ public class MineSweeperGame {
             System.out.println();
         }
     }
+
+    private void revealSquare(int row, int col) {
+        Square square = grid.getSquare(row, col);
+        if (square.isRevealed()) return;
+        square.setRevealed(true);
+        if (square.getAdjacentMines() == 0) {
+            for (int i = row - 1; i <= row + 1; i++) {
+                for (int j = col - 1; j <= col + 1; j++) {
+                    if (i >= 0 && i < grid.getSize() && j >= 0 && j < grid.getSize()) {
+                        revealSquare(i, j);
+                    }
+                }
+            }
+        }
+    }
+
 }
