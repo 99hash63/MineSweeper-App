@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class MineSweeperGame {
     private Grid grid;
     private static final int MIN_GRID_SIZE = 2;
-    private static final int MAX_GRID_SIZE = 15;
+    private static final int MAX_GRID_SIZE = 16;
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -19,12 +19,16 @@ public class MineSweeperGame {
         do {
             System.out.println("Enter the size of the grid between " + MIN_GRID_SIZE + " and " + MAX_GRID_SIZE + " (e.g. 4 for a 4x4 grid): ");
             gridSize = getIntInput(scanner);
+            if(gridSize < MIN_GRID_SIZE) System.out.println("Minimum size of the grid is " + MIN_GRID_SIZE);
+            if(gridSize > MAX_GRID_SIZE) System.out.println("Maximum size of the grid is " + MAX_GRID_SIZE);
         } while (gridSize < MIN_GRID_SIZE || gridSize > MAX_GRID_SIZE);
 
         int maxMineCount = (int) (gridSize * gridSize * 0.35);
         do {
             System.out.println("Enter the number of mines to place on the grid (maximum is 35% of the total squares = " + maxMineCount + "): ");
             mineCount = getIntInput(scanner);
+            if(mineCount > maxMineCount) System.out.println("Maximum number is 35% of the total squares = " + maxMineCount);
+            if(mineCount < 1) System.out.println("There must be at least 1 mine.");
         } while (mineCount < 1 || mineCount > maxMineCount);
         grid = new Grid(gridSize, mineCount);
 
@@ -53,9 +57,15 @@ public class MineSweeperGame {
                 }
             }
         }
-        System.out.println("Press any key to play again...");
-        scanner.next();
-        start();
+        System.out.println("Press -1 to exit, any other key to play again.");
+        int userInput =0;
+        if(scanner.hasNextInt()){
+            userInput = scanner.nextInt();
+        }
+        if(userInput == -1)
+            System.exit(0);
+        else
+            start();
     }
 
     private int getIntInput(Scanner scanner) {
@@ -68,9 +78,13 @@ public class MineSweeperGame {
 
     private boolean isSquareWithinValidRange(String input, int gridSize) {
         if (input.length() < 2 || input.length() > 3) return false;
-        char row = input.charAt(0);
-        int col = Integer.parseInt(input.substring(1));
-        return row >= 'A' && row < 'A' + gridSize && col >= 1 && col < 1 + gridSize;
+        try {
+            char row = input.charAt(0);
+            int col = Integer.parseInt(input.substring(1));
+            return row >= 'A' && row < 'A' + gridSize && col >= 1 && col < 1 + gridSize;
+        }catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void printGrid(boolean isUpdated) {
