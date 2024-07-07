@@ -12,20 +12,28 @@ public class Grid {
         this.size = size;
         this.mineCount = mineCount;
         this.squares = new Square[size][size];
+
+        generateGrid();
+        placeMines();
+    }
+
+    private void generateGrid() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 squares[i][j] = new Square();
             }
         }
+    }
 
+    private void placeMines() {
         Random random = new Random();
-        int minesPlaced = 0;
-        while (minesPlaced < mineCount) {
+        int mineCount = 0;
+        while (mineCount < this.mineCount) {
             int row = random.nextInt(size);
             int col = random.nextInt(size);
             if (!squares[row][col].isMine()) {
                 squares[row][col].setMine(true);
-                minesPlaced++;
+                mineCount++;
             }
         }
     }

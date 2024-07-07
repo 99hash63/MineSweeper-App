@@ -21,6 +21,4 @@ public class GridTest {
         }
         assertEquals(3, mineCount);
     }
-
-
 }
