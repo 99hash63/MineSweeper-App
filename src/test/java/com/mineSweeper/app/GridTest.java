@@ -33,6 +33,8 @@ public class GridTest {
         grid.getSquare(2, 2).setMine(true);
         grid.getSquare(0, 3).setMine(true);
         grid.getSquare(4, 3).setMine(true);
+        grid.calculateAdjacentMines();
+
 
         assertEquals(4, grid.getSquare(1, 0).getAdjacentMines());
         assertEquals(3, grid.getSquare(3, 0).getAdjacentMines());
