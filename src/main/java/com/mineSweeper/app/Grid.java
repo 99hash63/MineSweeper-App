@@ -45,7 +45,10 @@ public class Grid {
                     int count = 0;
                     for (int row = i - 1; row <= i + 1; row++) {
                         for (int col = j - 1; col <= j + 1; col++) {
-                            if (row >= 0 && row < size && col >= 0 && col < size && squares[row][col].isMine()) {
+                            if(row < 0 || row >= size || col < 0 || col >= size) {
+                                continue;
+                            }
+                            if (squares[row][col].isMine()) {
                                 count++;
                             }
                         }
