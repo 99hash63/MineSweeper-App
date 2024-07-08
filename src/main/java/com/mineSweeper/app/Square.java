@@ -4,8 +4,8 @@ public class Square {
     private boolean isMine;
     private boolean isRevealed;
     private int adjacentMines;
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     public Square(int row, int col) {
         this.row = row;

@@ -61,10 +61,49 @@ public class Grid {
     }
 
     public int getSize() {
-        return size;
+        return this.size;
     }
 
     public Square getSquare(int row, int col) {
         return squares[row][col];
+    }
+
+    public void revealSquare(Square square) {
+        if (square.isRevealed()) return;
+        square.setRevealed(true);
+        if (square.getAdjacentMines() == 0) {
+            for (int i = square.getRow() - 1; i <= square.getRow() + 1; i++) {
+                for (int j = square.getCol() - 1; j <= square.getCol() + 1; j++) {
+                    if (i >= 0 && i < this.getSize() && j >= 0 && j < this.getSize()) {
+                        revealSquare(this.getSquare(i, j));
+                    }
+                }
+            }
+        }
+    }
+
+    public void printGrid(boolean isUpdated) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        String message = isUpdated ? "Here is your updated minefield:" : "Here is your minefield:";
+        sb.append(message).append("\n");
+        sb.append("  ");
+        for (int i = 1; i <= this.getSize(); i++) {
+            sb.append(i).append(" ");
+        }
+        sb.append("\n");
+        for (int i = 0; i < this.getSize(); i++) {
+            sb.append((char) ('A' + i)).append(" ");
+            for (int j = 0; j < this.getSize(); j++) {
+                Square square = this.getSquare(i, j);
+                if (square.isRevealed()) {
+                    sb.append(square.getAdjacentMines()).append(" ");
+                } else {
+                    sb.append("_ ");
+                }
+            }
+            sb.append("\n");
+        }
+        System.out.println(sb);
     }
 }

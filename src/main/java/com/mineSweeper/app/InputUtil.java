@@ -2,7 +2,7 @@ package com.mineSweeper.app;
 
 import java.util.Scanner;
 
-public class InputHandler {
+public class InputUtil {
     public static int getIntInput(Scanner scanner) {
         while (!scanner.hasNextInt()) {
             System.out.println("Incorrect input.");
@@ -11,10 +11,10 @@ public class InputHandler {
         return scanner.nextInt();
     }
 
-    public static Square getSquareInput(String input) {
+    public static Square getSquareFromInput(String input, Grid grid) {
         int row = input.charAt(0) - 'A';
         int col = Integer.parseInt(input.substring(1)) - 1;
-        return new Square(row, col);
+        return grid.getSquare(row, col);
     }
 
     public static boolean isValidSquareInput(String input, int gridSize) {

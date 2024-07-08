@@ -2,14 +2,15 @@ package com.mineSweeper.app;
 
 import java.util.Scanner;
 
-import static com.mineSweeper.app.GameConstants.MAX_GRID_SIZE;
-import static com.mineSweeper.app.GameConstants.MIN_GRID_SIZE;
 import static com.mineSweeper.app.GameUtils.*;
-import static com.mineSweeper.app.InputHandler.getIntInput;
-import static com.mineSweeper.app.InputHandler.getSquareInput;
-import static com.mineSweeper.app.InputHandler.isValidSquareInput;
+import static com.mineSweeper.app.InputUtil.getIntInput;
+import static com.mineSweeper.app.InputUtil.getSquareFromInput;
+import static com.mineSweeper.app.InputUtil.isValidSquareInput;
 
 public class MineSweeperGame {
+    //Constants can be moved to a separate file if used in other classes 
+    private static final int MIN_GRID_SIZE = 2;
+    private static final int MAX_GRID_SIZE = 10;
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -22,7 +23,7 @@ public class MineSweeperGame {
         mineCount = promptForMineCount(scanner, maxMineCount);
         Grid grid = new Grid(gridSize, mineCount);
 
-        printGrid(false, grid);
+        grid.printGrid(false);
         playGame(scanner, gridSize, grid);
         endGame(scanner);
     }
@@ -61,15 +62,15 @@ public class MineSweeperGame {
                 System.out.println("Incorrect input");
                 continue;
             }
-            Square square = getSquareInput(input);
+            Square currentSquare = getSquareFromInput(input, grid);
 
-            if (grid.getSquare(square.getRow(), square.getCol()).isMine()) {
+            if (currentSquare.isMine()) {
                 System.out.println("Oh no, you detonated a mine! Game over.");
                 break;
             } else {
-                revealSquare(square.getRow(), square.getCol(), grid);
-                System.out.println("This square contains " + grid.getSquare(square.getRow(), square.getCol()).getAdjacentMines() + " adjacent mines.");
-                printGrid(true, grid);
+                grid.revealSquare(currentSquare);
+                System.out.println("This square contains " + currentSquare.getAdjacentMines() + " adjacent mines.");
+                grid.printGrid(true);
 
                 if (checkWin(grid)) {
                     System.out.println("Congratulations, you have won the game!");
@@ -77,6 +78,18 @@ public class MineSweeperGame {
                 }
             }
         }
+    }
+
+    public boolean checkWin(Grid grid) {
+        for (int i = 0; i < grid.getSize(); i++) {
+            for (int j = 0; j < grid.getSize(); j++) {
+                Square square = grid.getSquare(i, j);
+                if (!square.isMine() && !square.isRevealed()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void endGame(Scanner scanner) {
@@ -88,4 +101,6 @@ public class MineSweeperGame {
             start();
         scanner.close();
     }
+
+
 }
