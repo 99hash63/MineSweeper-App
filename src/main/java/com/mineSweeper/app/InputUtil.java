@@ -7,7 +7,8 @@ import java.util.Scanner;
  */
 public class InputUtil {
 
-    private InputUtil() {}
+    private InputUtil() {
+    }
 
     /**
      * Gets int input.
