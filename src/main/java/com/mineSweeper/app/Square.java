@@ -4,8 +4,12 @@ public class Square {
     private boolean isMine;
     private boolean isRevealed;
     private int adjacentMines;
+    private final int row;
+    private final int col;
 
-    public Square(){
+    public Square(int row, int col) {
+        this.row = row;
+        this.col = col;
         this.isMine = false;
         this.isRevealed = false;
         this.adjacentMines = 0;
@@ -34,4 +38,13 @@ public class Square {
     public void setAdjacentMines(int adjacentMines) {
         this.adjacentMines = adjacentMines;
     }
+
+    public int getRow() {
+        return this.row;
+    }
+
+    public int getCol() {
+        return this.col;
+    }
+
 }

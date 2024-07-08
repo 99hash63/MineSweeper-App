@@ -2,131 +2,85 @@ package com.mineSweeper.app;
 
 import java.util.Scanner;
 
+import static com.mineSweeper.app.GameUtils.*;
+import static com.mineSweeper.app.InputUtil.getIntInput;
+import static com.mineSweeper.app.InputUtil.getSquareFromInput;
+import static com.mineSweeper.app.InputUtil.isValidSquareInput;
 
 public class MineSweeperGame {
-    private Grid grid;
+    //Constants can be moved to a separate file if used in other classes 
     private static final int MIN_GRID_SIZE = 2;
-    private static final int MAX_GRID_SIZE = 16;
+    private static final int MAX_GRID_SIZE = 10;
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
         int gridSize;
         int mineCount;
 
-        System.out.println();
-        System.out.println("Welcome to Minesweeper!");
-        System.out.println();
+        System.out.println("\nWelcome to Minesweeper!\n");
+        gridSize = promptForGridSize(scanner);
+        int maxMineCount = getMaxMineCount(gridSize);
+        mineCount = promptForMineCount(scanner, maxMineCount);
+        Grid grid = new Grid(gridSize, mineCount);
+
+        grid.printGrid(false);
+        playGame(scanner, gridSize, grid);
+        endGame(scanner);
+    }
+
+    private int promptForGridSize(Scanner scanner) {
+        int gridSize;
         do {
             System.out.println("Enter the size of the grid between " + MIN_GRID_SIZE + " and " + MAX_GRID_SIZE + " (e.g. 4 for a 4x4 grid): ");
             gridSize = getIntInput(scanner);
-            if(gridSize < MIN_GRID_SIZE) System.out.println("Minimum size of the grid is " + MIN_GRID_SIZE);
-            if(gridSize > MAX_GRID_SIZE) System.out.println("Maximum size of the grid is " + MAX_GRID_SIZE);
+            if (gridSize < MIN_GRID_SIZE)
+                System.out.println("Minimum size of the grid is " + MIN_GRID_SIZE);
+            if (gridSize > MAX_GRID_SIZE)
+                System.out.println("Maximum size of the grid is " + MAX_GRID_SIZE);
         } while (gridSize < MIN_GRID_SIZE || gridSize > MAX_GRID_SIZE);
+        return gridSize;
+    }
 
-        int maxMineCount = (int) (gridSize * gridSize * 0.35);
+    private int promptForMineCount(Scanner scanner, int maxMineCount) {
+        int mineCount;
         do {
             System.out.println("Enter the number of mines to place on the grid (maximum is 35% of the total squares = " + maxMineCount + "): ");
             mineCount = getIntInput(scanner);
-            if(mineCount > maxMineCount) System.out.println("Maximum number is 35% of the total squares = " + maxMineCount);
-            if(mineCount < 1) System.out.println("There must be at least 1 mine.");
+            if (mineCount > maxMineCount)
+                System.out.println("Maximum number is 35% of the total squares = " + maxMineCount);
+            if (mineCount < 1)
+                System.out.println("There must be at least 1 mine.");
         } while (mineCount < 1 || mineCount > maxMineCount);
-        grid = new Grid(gridSize, mineCount);
+        return mineCount;
+    }
 
-        printGrid(false);
+    private void playGame(Scanner scanner, int gridSize, Grid grid) {
         while (true) {
             System.out.print("Select a square to reveal (e.g. A1): ");
             String input = scanner.next();
-            if (!isSquareWithinValidRange(input, gridSize)) {
+            if (!isValidSquareInput(input, gridSize)) {
                 System.out.println("Incorrect input");
                 continue;
             }
-            int row = input.charAt(0) - 'A';
-            int col = Integer.parseInt(input.substring(1)) - 1;
+            Square currentSquare = getSquareFromInput(input, grid);
 
-            if (grid.getSquare(row, col).isMine()) {
+            if (currentSquare.isMine()) {
                 System.out.println("Oh no, you detonated a mine! Game over.");
                 break;
             } else {
-                revealSquare(row, col);
-                System.out.println("This square contains " + grid.getSquare(row, col).getAdjacentMines() + " adjacent mines.");
-                printGrid(true);
+                grid.revealSquare(currentSquare);
+                System.out.println("This square contains " + currentSquare.getAdjacentMines() + " adjacent mines.");
+                grid.printGrid(true);
 
-                if (checkWin()) {
+                if (checkWin(grid)) {
                     System.out.println("Congratulations, you have won the game!");
                     break;
                 }
             }
         }
-        System.out.println("Press -1 to exit, any other key to play again.");
-        int userInput =0;
-        if(scanner.hasNextInt()){
-            userInput = scanner.nextInt();
-        }
-        if(userInput == -1)
-            System.exit(0);
-        else
-            start();
     }
 
-    private int getIntInput(Scanner scanner) {
-        while (!scanner.hasNextInt()) {
-            System.out.println("Incorrect input.");
-            scanner.next();
-        }
-        return scanner.nextInt();
-    }
-
-    private boolean isSquareWithinValidRange(String input, int gridSize) {
-        if (input.length() < 2 || input.length() > 3) return false;
-        try {
-            char row = input.charAt(0);
-            int col = Integer.parseInt(input.substring(1));
-            return row >= 'A' && row < 'A' + gridSize && col >= 1 && col < 1 + gridSize;
-        }catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    private void printGrid(boolean isUpdated) {
-        System.out.println();
-        String message = isUpdated ? "Here is your updated minefield:" : "Here is your minefield:";
-        System.out.println(message);
-        System.out.print("  ");
-        for (int i = 1; i <= grid.getSize(); i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < grid.getSize(); i++) {
-            System.out.print((char) ('A' + i) + " ");
-            for (int j = 0; j < grid.getSize(); j++) {
-                Square square = grid.getSquare(i, j);
-                if (square.isRevealed()) {
-                    System.out.print(square.getAdjacentMines() + " ");
-                } else {
-                    System.out.print("_ ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    private void revealSquare(int row, int col) {
-        Square square = grid.getSquare(row, col);
-        if (square.isRevealed()) return;
-        square.setRevealed(true);
-        if (square.getAdjacentMines() == 0) {
-            for (int i = row - 1; i <= row + 1; i++) {
-                for (int j = col - 1; j <= col + 1; j++) {
-                    if (i >= 0 && i < grid.getSize() && j >= 0 && j < grid.getSize()) {
-                        revealSquare(i, j);
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean checkWin() {
+    public boolean checkWin(Grid grid) {
         for (int i = 0; i < grid.getSize(); i++) {
             for (int j = 0; j < grid.getSize(); j++) {
                 Square square = grid.getSquare(i, j);
@@ -137,5 +91,16 @@ public class MineSweeperGame {
         }
         return true;
     }
+
+    private void endGame(Scanner scanner) {
+        System.out.println("Press -1 to exit, any other key to play again.");
+        String userInput = scanner.next();
+        if ("-1".equals(userInput))
+            System.exit(0);
+        else
+            start();
+        scanner.close();
+    }
+
 
 }
