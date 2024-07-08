@@ -23,7 +23,6 @@ public class GameUtils {
             }
             sb.append("\n");
         }
-        sb.append("\n");
         System.out.println(sb);
     }
 

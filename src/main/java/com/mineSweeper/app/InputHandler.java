@@ -11,7 +11,7 @@ public class InputHandler {
         return scanner.nextInt();
     }
 
-    public static boolean isSquareWithinValidRange(String input, int gridSize) {
+    public static boolean isValidSquareInput(String input, int gridSize) {
         if (input.length() < 2 || input.length() > 3) return false;
         try {
             char row = input.charAt(0);
