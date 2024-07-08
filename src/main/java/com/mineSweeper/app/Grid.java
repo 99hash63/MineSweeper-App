@@ -7,6 +7,8 @@ public class Grid {
     private final int size;
     private final int mineCount;
     private final Square[][] squares;
+    private final Random random = new Random();
+
 
     public Grid(int size, int mineCount) {
         this.size = size;
@@ -27,14 +29,13 @@ public class Grid {
     }
 
     private void placeMines() {
-        Random random = new Random();
-        int mineCount = 0;
-        while (mineCount < this.mineCount) {
+        int currentMineCount = 0;
+        while (currentMineCount < this.mineCount) {
             int row = random.nextInt(size);
             int col = random.nextInt(size);
             if (!squares[row][col].isMine()) {
                 squares[row][col].setMine(true);
-                mineCount++;
+                currentMineCount++;
             }
         }
     }
@@ -43,21 +44,26 @@ public class Grid {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (!squares[i][j].isMine()) {
-                    int count = 0;
-                    for (int row = i - 1; row <= i + 1; row++) {
-                        for (int col = j - 1; col <= j + 1; col++) {
-                            if (row < 0 || row >= size || col < 0 || col >= size) {
-                                continue;
-                            }
-                            if (squares[row][col].isMine()) {
-                                count++;
-                            }
-                        }
-                    }
-                    squares[i][j].setAdjacentMines(count);
+                    squares[i][j].setAdjacentMines(countAdjacentMines(i, j));
                 }
             }
         }
+    }
+
+    private int countAdjacentMines(int i, int j) {
+        int count = 0;
+        for (int row = i - 1; row <= i + 1; row++) {
+            for (int col = j - 1; col <= j + 1; col++) {
+                if (isInBounds(row, col) && squares[row][col].isMine()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private boolean isInBounds(int row, int col) {
+        return row >= 0 && row < size && col >= 0 && col < size;
     }
 
     public int getSize() {

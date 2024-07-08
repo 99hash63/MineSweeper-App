@@ -2,7 +2,7 @@ package com.mineSweeper.app;
 
 import java.util.Scanner;
 
-import static com.mineSweeper.app.GameUtils.*;
+import static com.mineSweeper.app.GameUtil.*;
 import static com.mineSweeper.app.InputUtil.getIntInput;
 import static com.mineSweeper.app.InputUtil.getSquareFromInput;
 import static com.mineSweeper.app.InputUtil.isValidSquareInput;

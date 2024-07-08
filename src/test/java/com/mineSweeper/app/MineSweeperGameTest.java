@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MineSweeperGameTest {
+ class MineSweeperGameTest {
 
     @Test
-    public void testCheckWin() {
+     void testCheckWin() {
         // Test with a grid where all non-mine squares are revealed
         MineSweeperGame game = new MineSweeperGame();
         Grid grid1 = new Grid(4, 3);

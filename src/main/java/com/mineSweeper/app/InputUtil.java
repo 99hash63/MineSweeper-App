@@ -3,6 +3,9 @@ package com.mineSweeper.app;
 import java.util.Scanner;
 
 public class InputUtil {
+
+    private InputUtil() {}
+
     public static int getIntInput(Scanner scanner) {
         while (!scanner.hasNextInt()) {
             System.out.println("Incorrect input.");
