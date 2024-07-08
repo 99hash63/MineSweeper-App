@@ -3,6 +3,9 @@ package com.mineSweeper.app;
 
 import java.util.Random;
 
+/**
+ * The type Grid.
+ */
 public class Grid {
     private final int size;
     private final int mineCount;
@@ -10,6 +13,12 @@ public class Grid {
     private final Random random = new Random();
 
 
+    /**
+     * Instantiates a new Grid.
+     *
+     * @param size      the size
+     * @param mineCount the mine count
+     */
     public Grid(int size, int mineCount) {
         this.size = size;
         this.mineCount = mineCount;
@@ -20,6 +29,9 @@ public class Grid {
         calculateAdjacentMines();
     }
 
+    /**
+     * Initializes the grid.
+     */
     private void generateGrid() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -28,6 +40,9 @@ public class Grid {
         }
     }
 
+    /**
+     * Places the mines randomly.
+     */
     private void placeMines() {
         int currentMineCount = 0;
         while (currentMineCount < this.mineCount) {
@@ -40,6 +55,9 @@ public class Grid {
         }
     }
 
+    /**
+     * Calculate adjacent mines.
+     */
     public void calculateAdjacentMines() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -74,6 +92,11 @@ public class Grid {
         return squares[row][col];
     }
 
+    /**
+     * Reveal all squares until reaching a square with adjacent mines.
+     *
+     * @param square the selected square
+     */
     public void revealSquare(Square square) {
         if (square.isRevealed()) return;
         square.setRevealed(true);
@@ -88,6 +111,11 @@ public class Grid {
         }
     }
 
+    /**
+     * Print grid.
+     *
+     * @param isUpdated denotes if the grid has been updated
+     */
     public void printGrid(boolean isUpdated) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");

@@ -7,11 +7,17 @@ import static com.mineSweeper.app.InputUtil.getIntInput;
 import static com.mineSweeper.app.InputUtil.getSquareFromInput;
 import static com.mineSweeper.app.InputUtil.isValidSquareInput;
 
+/**
+ * The type Mine sweeper game.
+ */
 public class MineSweeperGame {
     //Constants can be moved to a separate file if used in other classes 
     private static final int MIN_GRID_SIZE = 2;
     private static final int MAX_GRID_SIZE = 10;
 
+    /**
+     * Starting point of the game
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
         int gridSize;
@@ -54,6 +60,13 @@ public class MineSweeperGame {
         return mineCount;
     }
 
+    /**
+     * Starts reveal process.
+     *
+     * @param scanner     the scanner
+     * @param gridSize    the grid size
+     * @param grid        the grid
+     */
     private void playGame(Scanner scanner, int gridSize, Grid grid) {
         while (true) {
             System.out.print("Select a square to reveal (e.g. A1): ");
@@ -80,7 +93,13 @@ public class MineSweeperGame {
         }
     }
 
-    public boolean checkWin(Grid grid) {
+    /**
+     * Check if all squares without mines are revealed.
+     *
+     * @param grid the grid
+     * @return the boolean
+     */
+    protected boolean checkWin(Grid grid) {
         for (int i = 0; i < grid.getSize(); i++) {
             for (int j = 0; j < grid.getSize(); j++) {
                 Square square = grid.getSquare(i, j);
@@ -92,6 +111,11 @@ public class MineSweeperGame {
         return true;
     }
 
+    /**
+     * End game.
+     *
+     * @param scanner the scanner
+     */
     private void endGame(Scanner scanner) {
         System.out.println("Press -1 to exit, any other key to play again.");
         String userInput = scanner.next();
