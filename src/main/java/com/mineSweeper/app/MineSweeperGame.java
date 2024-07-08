@@ -2,9 +2,14 @@ package com.mineSweeper.app;
 
 import java.util.Scanner;
 
+import static com.mineSweeper.app.InputHandler.getIntInput;
+import static com.mineSweeper.app.InputHandler.isSquareWithinValidRange;
+import static com.mineSweeper.app.GameUtils.printGrid;
+import static com.mineSweeper.app.GameUtils.revealSquare;
+import static com.mineSweeper.app.GameUtils.checkWin;
+
 
 public class MineSweeperGame {
-    private Grid grid;
     private static final int MIN_GRID_SIZE = 2;
     private static final int MAX_GRID_SIZE = 16;
 
@@ -30,9 +35,9 @@ public class MineSweeperGame {
             if(mineCount > maxMineCount) System.out.println("Maximum number is 35% of the total squares = " + maxMineCount);
             if(mineCount < 1) System.out.println("There must be at least 1 mine.");
         } while (mineCount < 1 || mineCount > maxMineCount);
-        grid = new Grid(gridSize, mineCount);
+        Grid grid = new Grid(gridSize, mineCount);
 
-        printGrid(false);
+        printGrid(false, grid);
         while (true) {
             System.out.print("Select a square to reveal (e.g. A1): ");
             String input = scanner.next();
@@ -47,11 +52,11 @@ public class MineSweeperGame {
                 System.out.println("Oh no, you detonated a mine! Game over.");
                 break;
             } else {
-                revealSquare(row, col);
+                revealSquare(row, col, grid);
                 System.out.println("This square contains " + grid.getSquare(row, col).getAdjacentMines() + " adjacent mines.");
-                printGrid(true);
+                printGrid(true, grid);
 
-                if (checkWin()) {
+                if (checkWin(grid)) {
                     System.out.println("Congratulations, you have won the game!");
                     break;
                 }
@@ -66,76 +71,6 @@ public class MineSweeperGame {
             System.exit(0);
         else
             start();
-    }
-
-    private int getIntInput(Scanner scanner) {
-        while (!scanner.hasNextInt()) {
-            System.out.println("Incorrect input.");
-            scanner.next();
-        }
-        return scanner.nextInt();
-    }
-
-    private boolean isSquareWithinValidRange(String input, int gridSize) {
-        if (input.length() < 2 || input.length() > 3) return false;
-        try {
-            char row = input.charAt(0);
-            int col = Integer.parseInt(input.substring(1));
-            return row >= 'A' && row < 'A' + gridSize && col >= 1 && col < 1 + gridSize;
-        }catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    private void printGrid(boolean isUpdated) {
-        System.out.println();
-        String message = isUpdated ? "Here is your updated minefield:" : "Here is your minefield:";
-        System.out.println(message);
-        System.out.print("  ");
-        for (int i = 1; i <= grid.getSize(); i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < grid.getSize(); i++) {
-            System.out.print((char) ('A' + i) + " ");
-            for (int j = 0; j < grid.getSize(); j++) {
-                Square square = grid.getSquare(i, j);
-                if (square.isRevealed()) {
-                    System.out.print(square.getAdjacentMines() + " ");
-                } else {
-                    System.out.print("_ ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    private void revealSquare(int row, int col) {
-        Square square = grid.getSquare(row, col);
-        if (square.isRevealed()) return;
-        square.setRevealed(true);
-        if (square.getAdjacentMines() == 0) {
-            for (int i = row - 1; i <= row + 1; i++) {
-                for (int j = col - 1; j <= col + 1; j++) {
-                    if (i >= 0 && i < grid.getSize() && j >= 0 && j < grid.getSize()) {
-                        revealSquare(i, j);
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean checkWin() {
-        for (int i = 0; i < grid.getSize(); i++) {
-            for (int j = 0; j < grid.getSize(); j++) {
-                Square square = grid.getSquare(i, j);
-                if (!square.isMine() && !square.isRevealed()) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
 }
