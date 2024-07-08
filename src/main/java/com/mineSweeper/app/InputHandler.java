@@ -11,6 +11,12 @@ public class InputHandler {
         return scanner.nextInt();
     }
 
+    public static Square getSquareInput(String input) {
+        int row = input.charAt(0) - 'A';
+        int col = Integer.parseInt(input.substring(1)) - 1;
+        return new Square(row, col);
+    }
+
     public static boolean isValidSquareInput(String input, int gridSize) {
         if (input.length() < 2 || input.length() > 3) return false;
         try {

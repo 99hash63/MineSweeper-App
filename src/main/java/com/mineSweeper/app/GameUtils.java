@@ -1,6 +1,11 @@
 package com.mineSweeper.app;
 
 public class GameUtils {
+
+    public static int getMaxMineCount(int gridSize) {
+        return (int) (gridSize * gridSize * 0.35);
+    }
+
     public static void printGrid(boolean isUpdated, Grid grid) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");

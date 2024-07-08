@@ -10,6 +10,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameUtilsTest {
 
     @Test
+    public void testGetMaxMineCount() {
+        // Test with various grid sizes
+        assertEquals(0, GameUtils.getMaxMineCount(0)); // Edge case: grid size 0
+        assertEquals(1, GameUtils.getMaxMineCount(2)); // Small grid size
+        assertEquals(5, GameUtils.getMaxMineCount(4)); // Medium grid size
+        assertEquals(17, GameUtils.getMaxMineCount(7)); // Larger grid size
+        assertEquals(35, GameUtils.getMaxMineCount(10)); // Maximum grid size
+    }
+
+    @Test
     public void testPrintEmptyGridSmall() {
         Grid grid = new Grid(4, 0); // 4x4 grid with no mines
         String expectedOutput = "Here is your minefield:\n" +
