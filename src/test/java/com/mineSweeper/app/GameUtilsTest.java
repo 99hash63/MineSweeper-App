@@ -36,8 +36,8 @@ public class GameUtilsTest {
 
         String expectedOutput = "Here is your updated minefield:\n" +
                 "  1 2 3 4 \n" +
-                "A "+adjacentMines1+" _ _ _ \n" +
-                "B _ "+adjacentMines2+" _ _ \n" +
+                "A " + adjacentMines1 + " _ _ _ \n" +
+                "B _ " + adjacentMines2 + " _ _ \n" +
                 "C _ _ _ _ \n" +
                 "D _ _ _ _";
 

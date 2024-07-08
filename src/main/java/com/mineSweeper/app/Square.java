@@ -5,7 +5,7 @@ public class Square {
     private boolean isRevealed;
     private int adjacentMines;
 
-    public Square(){
+    public Square() {
         this.isMine = false;
         this.isRevealed = false;
         this.adjacentMines = 0;

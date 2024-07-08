@@ -38,6 +38,7 @@ public class Grid {
             }
         }
     }
+
     public void calculateAdjacentMines() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -45,7 +46,7 @@ public class Grid {
                     int count = 0;
                     for (int row = i - 1; row <= i + 1; row++) {
                         for (int col = j - 1; col <= j + 1; col++) {
-                            if(row < 0 || row >= size || col < 0 || col >= size) {
+                            if (row < 0 || row >= size || col < 0 || col >= size) {
                                 continue;
                             }
                             if (squares[row][col].isMine()) {
