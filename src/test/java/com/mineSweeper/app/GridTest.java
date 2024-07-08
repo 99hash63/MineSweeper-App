@@ -7,12 +7,12 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class GridTest {
+ class GridTest {
     @Test
-    public void testGridGeneration() {
+     void testGridGeneration() {
         Grid grid = new Grid(5, 3);
         assertEquals(5, grid.getSize());
         int mineCount = 0;
@@ -27,16 +27,14 @@ public class GridTest {
     }
 
     @Test
-    public void testAdjacentMines() {
+     void testAdjacentMines() {
         Grid grid = new Grid(6, 0);
-        grid.getSquare(0, 0).setMine(true);
-        grid.getSquare(2, 0).setMine(true);
-        grid.getSquare(1, 1).setMine(true);
-        grid.getSquare(2, 1).setMine(true);
-        grid.getSquare(3, 1).setMine(true);
-        grid.getSquare(2, 2).setMine(true);
-        grid.getSquare(0, 3).setMine(true);
-        grid.getSquare(4, 3).setMine(true);
+        int[][] mines = {{0, 0}, {2, 0}, {1, 1}, {2, 1}, {3, 1}, {2, 2}, {0, 3}, {4, 3}};
+        for (int[] coordinate : mines) {
+            int row = coordinate[0];
+            int col = coordinate[1];
+            grid.getSquare(row, col).setMine(true);
+        }
         grid.calculateAdjacentMines();
 
         assertEquals(4, grid.getSquare(1, 0).getAdjacentMines());
@@ -51,7 +49,7 @@ public class GridTest {
     }
 
     @Test
-    public void testRevealSquare() {
+    void testRevealSquare() {
         Grid grid = new Grid(4, 3);
         int[][] squaresToReveal = {{0, 0}, {1, 1}, {2, 2}, {3, 1}}; // Example positions to reveal
         for (int[] square : squaresToReveal) {
@@ -63,17 +61,17 @@ public class GridTest {
     }
 
     @Test
-    public void testGetMaxMineCount() {
+    void testGetMaxMineCount() {
         // Test with various grid sizes
-        assertEquals(0, GameUtils.getMaxMineCount(0)); // Edge case: grid size 0
-        assertEquals(1, GameUtils.getMaxMineCount(2)); // Small grid size
-        assertEquals(5, GameUtils.getMaxMineCount(4)); // Medium grid size
-        assertEquals(17, GameUtils.getMaxMineCount(7)); // Larger grid size
-        assertEquals(35, GameUtils.getMaxMineCount(10)); // Maximum grid size
+        assertEquals(0, GameUtil.getMaxMineCount(0)); // Edge case: grid size 0
+        assertEquals(1, GameUtil.getMaxMineCount(2)); // Small grid size
+        assertEquals(5, GameUtil.getMaxMineCount(4)); // Medium grid size
+        assertEquals(17, GameUtil.getMaxMineCount(7)); // Larger grid size
+        assertEquals(35, GameUtil.getMaxMineCount(10)); // Maximum grid size
     }
 
     @Test
-    public void testPrintEmptyGridSmall() {
+     void testPrintEmptyGridSmall() {
         Grid grid = new Grid(4, 0); // 4x4 grid with no mines
         String expectedOutput = "Here is your minefield:\n" +
                 "  1 2 3 4 \n" +
@@ -90,7 +88,7 @@ public class GridTest {
     }
 
     @Test
-    public void testPrintGridWithRevealedSquaresSmall() {
+     void testPrintGridWithRevealedSquaresSmall() {
         Grid grid = new Grid(4, 3); // 4x4 grid with 3 mines
         grid.getSquare(0, 0).setRevealed(true);
         grid.getSquare(1, 1).setRevealed(true);
@@ -112,7 +110,7 @@ public class GridTest {
     }
 
     @Test
-    public void testPrintEmptyGridLarge() {
+      void testPrintEmptyGridLarge() {
         Grid grid = new Grid(10, 20); // 3x3 grid with 2 mines
         String expectedOutput = "Here is your minefield:\n" +
                 "  1 2 3 4 5 6 7 8 9 10 \n" +
@@ -135,7 +133,7 @@ public class GridTest {
     }
 
     @Test
-    public void testPrintGridWithRevealedSquaresLarge() {
+     void testPrintGridWithRevealedSquaresLarge() {
         Grid grid = new Grid(10, 20); // 10x10 grid with 20 mines
         int gridSize = grid.getSize();
 

@@ -3,11 +3,22 @@ package com.mineSweeper.app;
 
 import java.util.Random;
 
+/**
+ * The type Grid.
+ */
 public class Grid {
     private final int size;
     private final int mineCount;
     private final Square[][] squares;
+    private final Random random = new Random();
 
+
+    /**
+     * Instantiates a new Grid.
+     *
+     * @param size      the size
+     * @param mineCount the mine count
+     */
     public Grid(int size, int mineCount) {
         this.size = size;
         this.mineCount = mineCount;
@@ -18,6 +29,9 @@ public class Grid {
         calculateAdjacentMines();
     }
 
+    /**
+     * Initializes the grid.
+     */
     private void generateGrid() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -26,38 +40,48 @@ public class Grid {
         }
     }
 
+    /**
+     * Places the mines randomly.
+     */
     private void placeMines() {
-        Random random = new Random();
-        int mineCount = 0;
-        while (mineCount < this.mineCount) {
+        int currentMineCount = 0;
+        while (currentMineCount < this.mineCount) {
             int row = random.nextInt(size);
             int col = random.nextInt(size);
             if (!squares[row][col].isMine()) {
                 squares[row][col].setMine(true);
-                mineCount++;
+                currentMineCount++;
             }
         }
     }
 
+    /**
+     * Calculate adjacent mines.
+     */
     public void calculateAdjacentMines() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (!squares[i][j].isMine()) {
-                    int count = 0;
-                    for (int row = i - 1; row <= i + 1; row++) {
-                        for (int col = j - 1; col <= j + 1; col++) {
-                            if (row < 0 || row >= size || col < 0 || col >= size) {
-                                continue;
-                            }
-                            if (squares[row][col].isMine()) {
-                                count++;
-                            }
-                        }
-                    }
-                    squares[i][j].setAdjacentMines(count);
+                    squares[i][j].setAdjacentMines(countAdjacentMines(i, j));
                 }
             }
         }
+    }
+
+    private int countAdjacentMines(int i, int j) {
+        int count = 0;
+        for (int row = i - 1; row <= i + 1; row++) {
+            for (int col = j - 1; col <= j + 1; col++) {
+                if (isInBounds(row, col) && squares[row][col].isMine()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private boolean isInBounds(int row, int col) {
+        return row >= 0 && row < size && col >= 0 && col < size;
     }
 
     public int getSize() {
@@ -68,6 +92,11 @@ public class Grid {
         return squares[row][col];
     }
 
+    /**
+     * Reveal all squares until reaching a square with adjacent mines.
+     *
+     * @param square the selected square
+     */
     public void revealSquare(Square square) {
         if (square.isRevealed()) return;
         square.setRevealed(true);
@@ -82,6 +111,11 @@ public class Grid {
         }
     }
 
+    /**
+     * Print grid.
+     *
+     * @param isUpdated denotes if the grid has been updated
+     */
     public void printGrid(boolean isUpdated) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
