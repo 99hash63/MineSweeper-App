@@ -7,6 +7,8 @@ Build the project: `mvn clean package`\
 Run the generated jar in target: `java -jar MineSweeper-App-1.0-SNAPSHOT.jar`
 
 ## Design
+
+**Maven based Dockerized Java Application**\
 **Main Application (App Class):**\
 The App class contains the main method which initializes and starts the MineSweeperGame.
 
@@ -31,8 +33,7 @@ Contains properties to indicate whether it is a mine, whether it has been reveal
 
 ## Testing
 
-Unit testing using junit jupiter\
-\
+**Junit Unit Testing**\
 **GridTest:**\
 Tests if grid generates with correct size and mine count.\
 Tests adjacent mine calculation of the whole grid.\
