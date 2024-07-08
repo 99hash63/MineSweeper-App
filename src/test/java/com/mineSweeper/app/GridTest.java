@@ -138,7 +138,7 @@ class GridTest {
             adjacentMines[square[0]][square[1]] = grid.getSquare(square[0], square[1]).getAdjacentMines();
         }
 
-        String expectedOutput = "Here is your minefield:\n" +
+        String expectedOutput = "Here is your updated minefield:\n" +
                 "  1 2 3 4 5 6 7 8 9 10 \n" +
                 "A " + adjacentMines[0][0] + " _ _ _ _ _ _ _ _ _ \n" +
                 "B _ " + adjacentMines[1][1] + " _ _ _ _ _ _ _ _ \n" +
@@ -153,7 +153,7 @@ class GridTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        grid.printGrid(false);
+        grid.printGrid(true);
 
         assertEquals(expectedOutput.trim(), outputStream.toString().trim());
     }
