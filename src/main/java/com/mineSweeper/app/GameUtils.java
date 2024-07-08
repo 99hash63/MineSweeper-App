@@ -2,27 +2,29 @@ package com.mineSweeper.app;
 
 public class GameUtils {
     public static void printGrid(boolean isUpdated, Grid grid) {
-        System.out.println();
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
         String message = isUpdated ? "Here is your updated minefield:" : "Here is your minefield:";
-        System.out.println(message);
-        System.out.print("  ");
+        sb.append(message).append("\n");
+        sb.append("  ");
         for (int i = 1; i <= grid.getSize(); i++) {
-            System.out.print(i + " ");
+            sb.append(i).append(" ");
         }
-        System.out.println();
+        sb.append("\n");
         for (int i = 0; i < grid.getSize(); i++) {
-            System.out.print((char) ('A' + i) + " ");
+            sb.append((char) ('A' + i)).append(" ");
             for (int j = 0; j < grid.getSize(); j++) {
                 Square square = grid.getSquare(i, j);
                 if (square.isRevealed()) {
-                    System.out.print(square.getAdjacentMines() + " ");
+                    sb.append(square.getAdjacentMines()).append(" ");
                 } else {
-                    System.out.print("_ ");
+                    sb.append("_ ");
                 }
             }
-            System.out.println();
+            sb.append("\n");
         }
-        System.out.println();
+        sb.append("\n");
+        System.out.println(sb);
     }
 
     public static void revealSquare(int row, int col, Grid grid) {
