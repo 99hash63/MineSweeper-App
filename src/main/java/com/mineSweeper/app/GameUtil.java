@@ -5,7 +5,8 @@ package com.mineSweeper.app;
  */
 public class GameUtil {
 
-    private GameUtil() {}
+    private GameUtil() {
+    }
 
     /**
      * Gets maximum mine count at the given grid size.
