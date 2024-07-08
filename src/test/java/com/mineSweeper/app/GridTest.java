@@ -29,14 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     @Test
      void testAdjacentMines() {
         Grid grid = new Grid(6, 0);
-        grid.getSquare(0, 0).setMine(true);
-        grid.getSquare(2, 0).setMine(true);
-        grid.getSquare(1, 1).setMine(true);
-        grid.getSquare(2, 1).setMine(true);
-        grid.getSquare(3, 1).setMine(true);
-        grid.getSquare(2, 2).setMine(true);
-        grid.getSquare(0, 3).setMine(true);
-        grid.getSquare(4, 3).setMine(true);
+        int[][] mines = {{0, 0}, {2, 0}, {1, 1}, {2, 1}, {3, 1}, {2, 2}, {0, 3}, {4, 3}};
+        for (int[] coordinate : mines) {
+            int row = coordinate[0];
+            int col = coordinate[1];
+            grid.getSquare(row, col).setMine(true);
+        }
         grid.calculateAdjacentMines();
 
         assertEquals(4, grid.getSquare(1, 0).getAdjacentMines());
