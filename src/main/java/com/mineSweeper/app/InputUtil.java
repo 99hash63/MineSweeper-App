@@ -18,7 +18,7 @@ public class InputUtil {
      */
     public static int getIntInput(Scanner scanner) {
         while (!scanner.hasNextInt()) {
-            System.out.println("Incorrect input.");
+            System.out.println("Incorrect input. Retry: ");
             scanner.next();
         }
         return scanner.nextInt();
