@@ -45,3 +45,13 @@ Tests all input valid/invalid scenarios
 **MineSweeperGameTest:**\
 Tests maximum mine count for different grid sizes (35%)\
 Tests game win functionality
+
+## Assumptions
+The grid size is between 2x2 and 10x10.\
+The number of mines is between 1 and 35% of the total squares in the grid.\
+The user inputs for grid size, mine count, and square selection are valid integer and string values.\
+Invalid inputs are handled by prompting the user again until a valid input is provided.\
+The game continues until the user either detonates a mine or successfully reveals all non-mine squares.\
+After the game ends, the user can choose to play again or exit by entering -1.
+
+
