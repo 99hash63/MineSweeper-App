@@ -6,24 +6,24 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
- class InputUtilTest {
+class InputUtilTest {
 
     @Test
-     void testGetIntInput_ValidInput() {
+    void testGetIntInput_ValidInput() {
         Scanner scanner = new Scanner("5");
         int result = InputUtil.getIntInput(scanner);
         assertEquals(5, result);
     }
 
     @Test
-     void testGetIntInput_NonIntegerInput() {
+    void testGetIntInput_NonIntegerInput() {
         Scanner scanner = new Scanner("abc\nfff\nd\n2");
         int result = InputUtil.getIntInput(scanner);
         assertEquals(2, result);
     }
 
     @Test
-     void testIsSquareWithinValidRange_ValidInput() {
+    void testIsSquareWithinValidRange_ValidInput() {
         boolean result1 = InputUtil.isValidSquareInput("A1", 5);
         assertTrue(result1);
 
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void testIsSquareWithinValidRange_InvalidInput() {
+    void testIsSquareWithinValidRange_InvalidInput() {
         boolean result1 = InputUtil.isValidSquareInput("A6", 5);
         assertFalse(result1); // Out of range
 
